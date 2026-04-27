@@ -7,6 +7,7 @@ defmodule AluminiumShop.Accounts do
   alias AluminiumShop.Repo
 
   alias AluminiumShop.Accounts.Role
+  alias AluminiumShop.Accounts.User
 
   @doc """
   Returns the list of roles.
@@ -210,11 +211,23 @@ defmodule AluminiumShop.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+  
+   def get_user_by_email_or_phone(identifier) do
+  Repo.get_by(User, email: identifier) ||
+    Repo.get_by(User, phone: identifier)
+end
 
-  def get_user_by_email_or_phone(identifier) do
-    from(u in User,
-      where: u.email == ^identifier or u.phone == ^identifier
-    )
-    |> Repo.one()
+def authenticate_user(identifier, password) do
+  case get_user_by_email_or_phone(identifier) do
+    nil ->
+      {:error, :invalid_credentials}
+
+    user ->
+      if Bcrypt.verify_pass(password, user.hashed_password) do
+        {:ok, user}
+      else
+        {:error, :invalid_credentials}
+      end
   end
+ end
 end

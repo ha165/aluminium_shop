@@ -25,23 +25,4 @@ defmodule AluminiumShop.Accounts.User do
     |> unique_constraint(:email)
     |>unique_constraint(:phone)
   end
-
-  def get_user_by_email_or_phone(identifier) do
-  Repo.get_by(User, email: identifier) ||
-    Repo.get_by(User, phone: identifier)
-end
-
-def authenticate_user(identifier, password) do
-  case get_user_by_email_or_phone(identifier) do
-    nil ->
-      {:error, :invalid_credentials}
-
-    user ->
-      if Bcrypt.verify_pass(password, user.hashed_password) do
-        {:ok, user}
-      else
-        {:error, :invalid_credentials}
-      end
-  end
- end
 end
