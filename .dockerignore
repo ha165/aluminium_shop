@@ -1,0 +1,45 @@
+# .dockerignore
+# Version control
+.git/
+.gitignore
+.github/
+
+# Build artifacts
+_build/
+deps/
+node_modules/
+cover/
+erl_crash.dump
+
+# Development files
+*.log
+*.local
+.env
+.env.*
+!.env.example
+
+# Documentation
+doc/
+docs/
+
+# Testing
+test/
+spec/
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Assets that will be compiled
+assets/node_modules/
+priv/static/assets/
