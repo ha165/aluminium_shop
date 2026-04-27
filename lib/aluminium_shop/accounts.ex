@@ -210,4 +210,11 @@ defmodule AluminiumShop.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def get_user_by_email_or_phone(identifier) do
+    from(u in User,
+      where: u.email == ^identifier or u.phone == ^identifier
+    )
+    |> Repo.one()
+  end
 end

@@ -26,18 +26,13 @@ defmodule AluminiumShop.Accounts.User do
     |>unique_constraint(:phone)
   end
 
-  def get_user_by_email(email) do
-    Repo.get_by(User, email: email)
-  end
+  def get_user_by_email_or_phone(identifier) do
+  Repo.get_by(User, email: identifier) ||
+    Repo.get_by(User, phone: identifier)
+end
 
-  def get_user_by_phone(phone) do
-    Repo.get_by(User, phone: phone)
-  end
-
-  def authenticate_user(email, password) do
-  user = get_user_by_email(email)
-
-  case user do
+def authenticate_user(identifier, password) do
+  case get_user_by_email_or_phone(identifier) do
     nil ->
       {:error, :invalid_credentials}
 
@@ -48,4 +43,5 @@ defmodule AluminiumShop.Accounts.User do
         {:error, :invalid_credentials}
       end
   end
+ end
 end
