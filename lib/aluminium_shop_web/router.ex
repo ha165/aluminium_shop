@@ -17,11 +17,14 @@ defmodule AluminiumShopWeb.Router do
   scope "/", AluminiumShopWeb do
     pipe_through :browser
 
+    live "/", LoginLive, :new
     live "/login", LoginLive, :new
-    get "/logout", SessionController, :delete
+
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
+
     live "/dashboard", DashboardLive, :index
 
-    get "/", PageController, :home
   end
 
   # Other scopes may use custom stacks.
