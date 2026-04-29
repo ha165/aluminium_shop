@@ -8,6 +8,11 @@ defmodule AluminiumShopWeb.Router do
     plug :put_root_layout, html: {AluminiumShopWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :AluminiumShopWeb.user_auth(), :fetch_current_user
+  end
+
+  pipeline :authenticated do
+    plug AluminiumShopWeb.UserAuth, :require_authenticated_user
   end
 
   pipeline :api do
@@ -24,7 +29,6 @@ defmodule AluminiumShopWeb.Router do
     delete "/logout", SessionController, :delete
 
     live "/dashboard", DashboardLive, :index
-
   end
 
   # Other scopes may use custom stacks.
