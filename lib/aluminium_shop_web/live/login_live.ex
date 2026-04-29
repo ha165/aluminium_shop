@@ -1,14 +1,14 @@
 defmodule AluminiumShopWeb.LoginLive do
   use AluminiumShopWeb, :live_view
 
-  alias AluminiumShop.Accounts
-
   def render(assigns) do
     ~H"""
     <div class="max-w-md mx-auto mt-20">
       <h1 class="text-2xl font-bold mb-4">Login</h1>
 
-      <.form for={%{}} phx-submit="login">
+      <form action="/login" method="post">
+        <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
+
         <input
           type="text"
           name="identifier"
@@ -26,29 +26,8 @@ defmodule AluminiumShopWeb.LoginLive do
         <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">
           Login
         </button>
-      </.form>
-
-      <%= if @error do %>
-        <p class="text-red-600 mt-3"><%= @error %></p>
-      <% end %>
+      </form>
     </div>
     """
-  end
-
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, error: nil)}
-  end
-
-  def handle_event("login", %{"identifier" => id, "password" => pass}, socket) do
-    case Accounts.authenticate_user(id, pass) do
-      {:ok, user} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Welcome back")
-         |> push_navigate(to: "/dashboard?user_id=#{user.id}")}
-
-      {:error, :invalid_credentials} ->
-        {:noreply, assign(socket, error: "Invalid credentials")}
-    end
   end
 end
