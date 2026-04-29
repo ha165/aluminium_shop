@@ -17,6 +17,10 @@ defmodule AluminiumShopWeb.Router do
   scope "/", AluminiumShopWeb do
     pipe_through :browser
 
+    live "/login", LoginLive, :new
+    get "/logout", SessionController, :delete
+    live "/dashboard", DashboardLive, :index
+
     get "/", PageController, :home
   end
 
