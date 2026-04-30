@@ -8,11 +8,19 @@ defmodule AluminiumShopWeb.Router do
     plug :put_root_layout, html: {AluminiumShopWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug     AluminiumShopWeb.UserAuth, :fetch_current_user
+    plug :fetch_current_user
   end
 
   pipeline :authenticated do
-    plug AluminiumShopWeb.UserAuth, :require_authenticated_user
+    plug :require_authenticated_user
+  end
+
+  defp fetch_current_user(conn, _opts) do
+    AluminiumShopWeb.UserAuth.fetch_current_user(conn, [])
+  end
+
+  defp require_authenticated_user(conn, _opts) do
+    AluminiumShopWeb.UserAuth.require_authenticated_user(conn, [])
   end
 
   pipeline :api do

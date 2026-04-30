@@ -3,19 +3,30 @@ defmodule AluminiumShopWeb.SessionController do
 
   alias AluminiumShop.Accounts
 
-  def create(conn, %{"identifier" => identifier, "password" => password}) do
-    case Accounts.authenticate_user(identifier, password) do
-      {:ok, user} ->
-        conn
-        |> renew_session()
-        |> put_session(:user_id, user.id)
-        |> put_flash(:info, "Welcome back")
-        |> redirect(to: "/dashboard")
+  def create(conn, params) do
+    IO.inspect(params, label: "LOGIN PARAMS")
 
-      {:error, :invalid_credentials} ->
-        conn
-        |> put_flash(:error, "Invalid credentials")
-        |> redirect(to: "/login")
+    identifier = params["identifier"]
+    password = params["password"]
+
+    if identifier && password do
+      case Accounts.authenticate_user(identifier, password) do
+        {:ok, user} ->
+          conn
+          |> renew_session()
+          |> put_session(:user_id, user.id)
+          |> put_flash(:info, "Welcome back")
+          |> redirect(to: "/dashboard")
+
+        {:error, :invalid_credentials} ->
+          conn
+          |> put_flash(:error, "Invalid credentials")
+          |> redirect(to: "/login")
+      end
+    else
+      conn
+      |> put_flash(:error, "Please provide both identifier and password")
+      |> redirect(to: "/login")
     end
   end
 
