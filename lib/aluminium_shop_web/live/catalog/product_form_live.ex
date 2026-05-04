@@ -15,7 +15,7 @@ defmodule AluminiumShopWeb.ProductFormLive do
         {:noreply,
          socket
          |> put_flash(:info, "Product created")
-         |> push_navigate(to: "/products")}
+         |> push_navigate(to: "/products/new")}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -88,7 +88,7 @@ defmodule AluminiumShopWeb.ProductFormLive do
           <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Save Product
           </button>
-          <.link navigate={~p"/products"} class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+          <.link navigate={~p"/products/new"} class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
             Cancel
           </.link>
         </div>
