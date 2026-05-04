@@ -1,7 +1,6 @@
 defmodule AluminiumShopWeb.UserAuth do
   import Phoenix.Component
   import Phoenix.LiveView
-  alias AluminiumShop.Accounts
   alias AluminiumShop.Accounts.User
   alias AluminiumShop.Repo
 

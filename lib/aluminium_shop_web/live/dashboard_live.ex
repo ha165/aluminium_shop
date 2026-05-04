@@ -1,8 +1,6 @@
 defmodule AluminiumShopWeb.DashboardLive do
   use AluminiumShopWeb, :live_view
 
-  alias AluminiumShop.Accounts
-
   def render(assigns) do
     ~H"""
     <div class="p-8">
@@ -18,7 +16,7 @@ defmodule AluminiumShopWeb.DashboardLive do
       <% end %>
     </div>
 
-    <.form method="delete" action={~p"/logout"}>
+    <.form for={:logout} method="delete" action={~p"/logout"}>
       <button type="submit">Log out</button>
     </.form>
     """
