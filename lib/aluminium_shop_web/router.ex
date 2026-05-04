@@ -29,9 +29,11 @@ defmodule AluminiumShopWeb.Router do
 
   scope "/", AluminiumShopWeb do
     pipe_through :browser
-
-    live "/", LoginLive, :new
-    live "/login", LoginLive, :new
+    live_session :publlic,
+      on_mount:[{AluminiumShopWeb.UserAuth, :default}] do
+      live "/", LoginLive, :new
+      live "/login", LoginLive, :new
+    end
 
     post "/login", SessionController, :create
     delete "/logout", SessionController, :delete

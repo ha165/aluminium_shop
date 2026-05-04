@@ -24,4 +24,19 @@ defmodule AluminiumShopWeb.UserAuth do
       |> halt()
     end
   end
+
+  # -------- LiveView(on mount) --------
+    def on_mount(:require_authenticated_user, _params, session, socket) do
+    case session["user_id"] do
+      nil ->
+        {:halt,
+         socket
+         |> put_flash(:error, "Please login")
+         |> redirect(to: "/login")}
+
+      id ->
+        user = Accounts.get_user!(id)
+        {:cont, assign(socket, current_user: user)}
+    end
+  end
 end
