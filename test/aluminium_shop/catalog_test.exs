@@ -45,4 +45,6 @@ defmodule AluminiumShop.CatalogTest do
       assert product.sku == "ALWIN"
     end
   end
+
+  
 end
