@@ -41,8 +41,11 @@ defmodule AluminiumShopWeb.Router do
 
   scope "/", AluminiumShopWeb do
     pipe_through [:browser, :authenticated]
-
-    live "/dashboard", DashboardLive, :index
+    
+    live_session :authenticated,
+      on_mount:[{AluminiumShopWeb.UserAuth, :require_authenticated_user}] do
+      live "/dashboard", DashboardLive, :index
+    end
   end
 
   # Other scopes may use custom stacks.
