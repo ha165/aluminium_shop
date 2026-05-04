@@ -2,6 +2,7 @@ defmodule AluminiumShopWeb.UserAuth do
   import Phoenix.Component
   import Phoenix.LiveView
   alias AluminiumShop.Accounts
+  alias AluminiumShop.Accounts.User
 
   # -------- CONTROLLER (PLUG) --------
 
@@ -9,7 +10,7 @@ defmodule AluminiumShopWeb.UserAuth do
     user =
       case Plug.Conn.get_session(conn, :user_id) do
         nil -> nil
-        id -> Accounts.get_user!(id)
+        id -> Repo.get(User, id) |> Repo.preload(:role)
       end
 
     Plug.Conn.assign(conn, :current_user, user)
@@ -40,7 +41,7 @@ defmodule AluminiumShopWeb.UserAuth do
          |> redirect(to: "/login")}
 
       id ->
-        user = Accounts.get_user!(id)
+        user = Repo.get(User, id) |> Repo.preload(:role)
 
         {:cont, assign(socket, :current_user, user)}
     end
