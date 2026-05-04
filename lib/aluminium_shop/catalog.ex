@@ -114,7 +114,7 @@ defmodule AluminiumShop.Catalog do
 
   """
   def list_products do
-    Repo.all(Product)
+    Repo.all(Product) |> Repo.preload(:category)
   end
 
   @doc """
@@ -131,7 +131,9 @@ defmodule AluminiumShop.Catalog do
       ** (Ecto.NoResultsError)
 
   """
-  def get_product!(id), do: Repo.get!(Product, id)
+  def get_product!(id) do
+    Repo.get!(Product, id) |> Repo.preload(:category)
+  end
 
   @doc """
   Creates a product.
