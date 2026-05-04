@@ -3,10 +3,10 @@ defmodule AluminiumShop.Repo.Migrations.CreateProducts do
 
   def change do
     create table(:products) do
-     add :name, :string, null: false
+      add :name, :string, null: false
       add :sku, :string, null: false
       add :description, :text
-      add :category_id, references(:categories, on_delete: :nothing)
+      add :category_id, references(:categories, type: :binary_id, on_delete: :nothing)
       timestamps(type: :utc_datetime)
     end
 
