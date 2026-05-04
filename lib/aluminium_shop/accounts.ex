@@ -211,23 +211,30 @@ defmodule AluminiumShop.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
-  
-   def get_user_by_email_or_phone(identifier) do
-  Repo.get_by(User, email: identifier) ||
-    Repo.get_by(User, phone: identifier)
-end
 
-def authenticate_user(identifier, password) do
-  case get_user_by_email_or_phone(identifier) do
-    nil ->
-      {:error, :invalid_credentials}
-
-    user ->
-      if Bcrypt.verify_pass(password, user.hashed_password) do
-        {:ok, user}
-      else
-        {:error, :invalid_credentials}
-      end
+  def get_user_by_email_or_phone(identifier) do
+    Repo.get_by(User, email: identifier) ||
+      Repo.get_by(User, phone: identifier)
   end
- end
+
+  def authenticate_user(identifier, password) do
+    case get_user_by_email_or_phone(identifier) do
+      nil ->
+        {:error, :invalid_credentials}
+
+      user ->
+        if Bcrypt.verify_pass(password, user.hashed_password) do
+          {:ok, user}
+        else
+          {:error, :invalid_credentials}
+        end
+    end
+  end
+
+  # ---------- Role Helpers ----------
+  def is_admin?(%User{role: %{name: "admin"}}), do: true
+  def is_admin?(_), do: false
+
+  def is_staff?(%User{role: %{name: "employee"}}), do: true
+  def is_staff?(_), do: false
 end
