@@ -6,7 +6,8 @@ defmodule AluminiumShop.Catalog.Product do
     field :name, :string
     field :sku, :string
     field :description, :string
-    field :category_id, :id
+
+    belongs_to :category, AluminiumShop.Catalog.Category
 
     timestamps(type: :utc_datetime)
   end

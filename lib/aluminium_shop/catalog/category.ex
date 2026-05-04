@@ -6,7 +6,13 @@ defmodule AluminiumShop.Catalog.Category do
     field :name, :string
     field :parent_id, Ecto.UUID
 
-    timestamps(type: :utc_datetime)
+
+    belongs_to :parent, __MODULE__, type: :binary_id
+    has_many :subcategories, __MODULE__, foreign_key: :parent_id
+
+    has_many :products, AluminiumShop.Catalog.Product
+
+  timestamps(type: :utc_datetime)
   end
 
   @doc false
