@@ -3,6 +3,7 @@ defmodule AluminiumShopWeb.UserAuth do
   import Phoenix.LiveView
   alias AluminiumShop.Accounts
   alias AluminiumShop.Accounts.User
+  alias AluminiumShop.Repo
 
   # -------- CONTROLLER (PLUG) --------
 
@@ -28,10 +29,11 @@ defmodule AluminiumShopWeb.UserAuth do
   end
 
   # -------- LIVEVIEW --------
+
   def on_mount(:default, _params, _session, socket) do
     {:cont, socket}
   end
-  
+
   def on_mount(:require_authenticated_user, _params, session, socket) do
     case session["user_id"] do
       nil ->
@@ -42,8 +44,31 @@ defmodule AluminiumShopWeb.UserAuth do
 
       id ->
         user = Repo.get(User, id) |> Repo.preload(:role)
-
         {:cont, assign(socket, :current_user, user)}
+    end
+  end
+
+  # -------- Role Guards --------
+
+  def on_mount(:require_admin, _params, session, socket) do
+    case session["user_id"] do
+      nil ->
+        {:halt,
+         socket
+         |> put_flash(:error, "Please login")
+         |> redirect(to: "/login")}
+
+      id ->
+        user = Repo.get(User, id) |> Repo.preload(:role)
+
+        if user && user.role && user.role.name == "admin" do
+          {:cont, assign(socket, :current_user, user)}
+        else
+          {:halt,
+           socket
+           |> put_flash(:error, "Access denied. Admin privileges required.")
+           |> redirect(to: "/dashboard")}
+        end
     end
   end
 end

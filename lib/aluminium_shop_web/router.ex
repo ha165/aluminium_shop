@@ -1,6 +1,8 @@
 defmodule AluminiumShopWeb.Router do
   use AluminiumShopWeb, :router
 
+  # ---------------- PIPELINES ----------------
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -11,21 +13,11 @@ defmodule AluminiumShopWeb.Router do
     plug :fetch_current_user
   end
 
-  pipeline :authenticated do
-    plug :require_authenticated_user
-  end
-
   defp fetch_current_user(conn, _opts) do
     AluminiumShopWeb.UserAuth.fetch_current_user(conn, [])
   end
 
-  defp require_authenticated_user(conn, _opts) do
-    AluminiumShopWeb.UserAuth.require_authenticated_user(conn, [])
-  end
-
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
+  # ---------------- PUBLIC ----------------
 
   scope "/", AluminiumShopWeb do
     pipe_through :browser
@@ -40,34 +32,29 @@ defmodule AluminiumShopWeb.Router do
     delete "/logout", SessionController, :delete
   end
 
+  # ---------------- AUTHENTICATED ----------------
+
   scope "/", AluminiumShopWeb do
-    pipe_through [:browser, :authenticated]
-    
+    pipe_through :browser
+
     live_session :authenticated,
       on_mount: [{AluminiumShopWeb.UserAuth, :require_authenticated_user}] do
       live "/dashboard", DashboardLive, :index
     end
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", AluminiumShopWeb do
-  #   pipe_through :api
-  # end
+  # ---------------- ADMIN ----------------
 
-  # Enable LiveDashboard and Swoosh mailbox preview in development
-  if Application.compile_env(:aluminium_shop, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
-    import Phoenix.LiveDashboard.Router
+  scope "/", AluminiumShopWeb do
+    pipe_through :browser
 
-    scope "/dev" do
-      pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: AluminiumShopWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+    live_session :admin,
+      on_mount: [
+        {AluminiumShopWeb.UserAuth, :require_authenticated_user},
+        {AluminiumShopWeb.UserAuth, :require_admin}
+      ] do
+      live "/admin", AdminDashboardLive, :index
+      live "/users", UserManagementLive, :index
     end
   end
 end
