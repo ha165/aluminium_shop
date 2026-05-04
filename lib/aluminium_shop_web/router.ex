@@ -29,8 +29,9 @@ defmodule AluminiumShopWeb.Router do
 
   scope "/", AluminiumShopWeb do
     pipe_through :browser
-    live_session :publlic,
-      on_mount:[{AluminiumShopWeb.UserAuth, :default}] do
+
+    live_session :public,
+      on_mount: [{AluminiumShopWeb.UserAuth, :default}] do
       live "/", LoginLive, :new
       live "/login", LoginLive, :new
     end
@@ -43,7 +44,7 @@ defmodule AluminiumShopWeb.Router do
     pipe_through [:browser, :authenticated]
     
     live_session :authenticated,
-      on_mount:[{AluminiumShopWeb.UserAuth, :require_authenticated_user}] do
+      on_mount: [{AluminiumShopWeb.UserAuth, :require_authenticated_user}] do
       live "/dashboard", DashboardLive, :index
     end
   end
