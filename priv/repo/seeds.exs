@@ -9,3 +9,12 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+# priv/repo/seeds.exs
+
+Code.require_file("seeds/roles.exs", __DIR__)
+Code.require_file("seeds/users.exs", __DIR__)
+Code.require_file("seeds/categories.exs", __DIR__)
+Code.require_file("seeds/products.exs", __DIR__)
+Code.require_file("seeds/customers.exs", __DIR__)
+Code.require_file("seeds/inventory.exs", __DIR__)
+Code.require_file("seeds/quotations.exs", __DIR__)

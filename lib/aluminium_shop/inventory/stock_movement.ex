@@ -2,6 +2,7 @@ defmodule AluminiumShop.Inventory.StockMovement do
   use Ecto.Schema
   import Ecto.Changeset
 
+
   schema "stock_movements" do
     field :quantity, :integer
     field :type, :string

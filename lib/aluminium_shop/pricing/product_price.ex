@@ -2,6 +2,9 @@ defmodule AluminiumShop.Pricing.ProductPrice do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+@foreign_key_type :binary_id
+
   schema "product_prices" do
     field :price, :decimal
     field :currency, :string
