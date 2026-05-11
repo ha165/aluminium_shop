@@ -1,0 +1,18 @@
+defmodule AluminiumShop.Repo.Migrations.CreateQuotationItems do
+  use Ecto.Migration
+
+  def change do
+    create table(:quotation_items) do
+      add :quantity, :integer
+      add :unit_price, :decimal
+      add :subtotal, :decimal
+      add :quotation_id, references(:quotations, on_delete: :delete_all)
+      add :product_id, references(:products, on_delete: :nothing)
+
+      timestamps(type: :utc_datetime)
+    end
+
+    create index(:quotation_items, [:quotation_id])
+    create index(:quotation_items, [:product_id])
+  end
+end
