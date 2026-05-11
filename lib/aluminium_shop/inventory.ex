@@ -198,6 +198,11 @@ defmodule AluminiumShop.Inventory do
     StockMovement.changeset(stock_movement, attrs)
   end
 
+  def list_inventory do
+    Repo.all(Stock)
+    |> Repo.preload(:product)
+  end
+
   def restock_product(product_id, quantity, user_id) do
     Repo.transaction(fn ->
       inventory =

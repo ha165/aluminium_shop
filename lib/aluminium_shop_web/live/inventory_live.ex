@@ -3,13 +3,10 @@ defmodule AluminiumShopWeb.InventoryLive do
 
   alias AluminiumShop.Inventory.Stock
   alias AluminiumShop.Repo
+  alias AluminiumShop.Inventory
 
   def mount(_, _, socket) do
-    inventories =
-      Repo.all(Stock)
-      |> Repo.preload(:product)
-
-    {:ok, assign(socket, inventories: inventories)}
+    {:ok, assign(socket, inventories: Inventory.list_inventory())}
   end
 
   def render(assigns) do
@@ -20,15 +17,15 @@ defmodule AluminiumShopWeb.InventoryLive do
       <%= for inventory <- @inventories do %>
         <div class="border p-4 mb-2 rounded">
           <h2 class="text-xl">
-            <%= inventory.product.name %>
+            {inventory.product.name}
           </h2>
 
           <p>
-            Stock: <%= inventory.quantity %>
+            Stock: {inventory.quantity}
           </p>
 
           <p>
-            Location: <%= inventory.location %>
+            Location: {inventory.location}
           </p>
         </div>
       <% end %>
