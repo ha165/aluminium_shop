@@ -8,7 +8,7 @@ defmodule AluminiumShop.Inventory.StockMovement do
     field :reason, :string
 
     belongs_to :product, AluminiumShop.Catalog.Product.
-    belongs_to :created_by, AluminiumShop.Accounts.User
+    belongs_to :user, AluminiumShop.Accounts.User, foreign_key: :created_by
 
     timestamps(type: :utc_datetime)
   end
