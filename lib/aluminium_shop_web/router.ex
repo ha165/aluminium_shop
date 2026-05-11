@@ -41,6 +41,7 @@ defmodule AluminiumShopWeb.Router do
       on_mount: [{AluminiumShopWeb.UserAuth, :require_authenticated_user}] do
       live "/dashboard", DashboardLive, :index
       live "/products/index", ProductIndexLive, :index
+      live "/inventory", InventoryLive, :index
     end
   end
 
@@ -57,6 +58,7 @@ defmodule AluminiumShopWeb.Router do
       # live "/admin", AdminDashboardLive, :index
       # live "/users", UserManagementLive, :index
       live "/products/new", ProductFormLive, :new
+      live "/inventory/restock", RestockLive, :new
     end
   end
 end
