@@ -5,7 +5,8 @@ defmodule AluminiumShop.Inventory.Stock do
   schema "inventories" do
     field :quantity, :integer
     field :location, :string
-    field :product_id, :id
+
+    belongs_to :product, AluminiumShop.Catalog.Product
 
     timestamps(type: :utc_datetime)
   end
