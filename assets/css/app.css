@@ -103,3 +103,61 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
+
+/* assets/css/app.css - Add these animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.stat {
+  transition: transform 0.2s ease;
+}
+
+.stat:hover {
+  transform: translateY(-2px);
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
