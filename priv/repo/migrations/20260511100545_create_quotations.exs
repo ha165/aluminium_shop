@@ -2,7 +2,8 @@ defmodule AluminiumShop.Repo.Migrations.CreateQuotations do
   use Ecto.Migration
 
   def change do
-    create table(:quotations) do
+    create table(:quotations, primary_key: false) do
+      add :id, :binary_id, primary_key: true
       add :status, :string
       add :total_amount, :decimal
       add :customer_id, references(:customers, on_delete: :nothing)

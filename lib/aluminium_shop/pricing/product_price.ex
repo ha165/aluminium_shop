@@ -10,7 +10,7 @@ defmodule AluminiumShop.Pricing.ProductPrice do
     field :currency, :string
     field :effective_from, :utc_datetime
 
-    belongs_to :product, AluminiumShop.Catalog.Product, type: Ecto.UUID, foreign_key: :product_id
+    belongs_to :product, AluminiumShop.Catalog.Product
     timestamps(type: :utc_datetime)
   end
 

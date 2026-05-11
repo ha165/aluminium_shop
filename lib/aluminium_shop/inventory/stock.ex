@@ -2,6 +2,9 @@ defmodule AluminiumShop.Inventory.Stock do
   use Ecto.Schema
   import Ecto.Changeset
 
+    @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
   schema "inventories" do
     field :quantity, :integer
     field :location, :string

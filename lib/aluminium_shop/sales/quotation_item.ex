@@ -2,6 +2,10 @@ defmodule AluminiumShop.Sales.QuotationItem do
   use Ecto.Schema
   import Ecto.Changeset
 
+    @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
+
   schema "quotation_items" do
     field :quantity, :integer
     field :unit_price, :decimal
