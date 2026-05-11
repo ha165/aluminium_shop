@@ -1,0 +1,21 @@
+defmodule AluminiumShop.Pricing.ProductPrice do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "product_prices" do
+    field :price, :decimal
+    field :currency, :string
+    field :effective_from, :utc_datetime
+    
+    belongs_to :product, AluminiumShop.Catalog.Product, type: Ecto.UUID, foreign_key: :product_id
+    timestamps(type: :utc_datetime)
+  end
+
+  @doc false
+  def changeset(product_price, attrs) do
+    product_price
+    |> cast(attrs, [:product_id, :price, :currency, :effective_from])
+    |> validate_required([:product_id, :price, :currency, :effective_from])
+    |> foreign_key_constraint(:product_id)
+  end
+end
