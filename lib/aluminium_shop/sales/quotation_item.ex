@@ -8,7 +8,7 @@ defmodule AluminiumShop.Sales.QuotationItem do
     field :subtotal, :decimal
 
     belongs_to :quotation, AluminiumShop.Sales.Quotation
-    belongs_to :product, AluminiumShop.Products.Product
+    belongs_to :product, AluminiumShop.Catalog.Product
 
     timestamps(type: :utc_datetime)
   end

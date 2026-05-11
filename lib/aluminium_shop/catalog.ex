@@ -7,6 +7,7 @@ defmodule AluminiumShop.Catalog do
   alias AluminiumShop.Repo
 
   alias AluminiumShop.Catalog.Category
+  alias AluminiumShop.Pricing.ProductPrice
 
   @doc """
   Returns the list of categories.
@@ -199,4 +200,25 @@ defmodule AluminiumShop.Catalog do
   def change_product(%Product{} = product, attrs \\ %{}) do
     Product.changeset(product, attrs)
   end
+
+  def get_latest_price(product_id) do
+  Repo.one(
+    from p in ProductPrice,
+    where: p.product_id == ^product_id,
+    order_by: [desc: p.effective_from],
+    limit: 1
+  )
+end
+
+def set_product_price(product_id, price, currency \\ "KES") do
+  %ProductPrice{}
+  |> ProductPrice.changeset(%{
+    product_id: product_id,
+    price: price,
+    currency: currency,
+    effective_from: DateTime.utc_now()
+  })
+  |> Repo.insert()
+end
+
 end

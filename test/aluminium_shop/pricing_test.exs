@@ -21,7 +21,12 @@ defmodule AluminiumShop.PricingTest do
     end
 
     test "create_product_price/1 with valid data creates a product_price" do
-      valid_attrs = %{currency: "some currency", product_id: "7488a646-e31f-11e4-aace-600308960662", price: "120.5", effective_from: ~U[2026-05-10 11:19:00Z]}
+      valid_attrs = %{
+        currency: "some currency",
+        product_id: "7488a646-e31f-11e4-aace-600308960662",
+        price: "120.5",
+        effective_from: ~U[2026-05-10 11:19:00Z]
+      }
 
       assert {:ok, %ProductPrice{} = product_price} = Pricing.create_product_price(valid_attrs)
       assert product_price.currency == "some currency"
@@ -36,9 +41,17 @@ defmodule AluminiumShop.PricingTest do
 
     test "update_product_price/2 with valid data updates the product_price" do
       product_price = product_price_fixture()
-      update_attrs = %{currency: "some updated currency", product_id: "7488a646-e31f-11e4-aace-600308960668", price: "456.7", effective_from: ~U[2026-05-11 11:19:00Z]}
 
-      assert {:ok, %ProductPrice{} = product_price} = Pricing.update_product_price(product_price, update_attrs)
+      update_attrs = %{
+        currency: "some updated currency",
+        product_id: "7488a646-e31f-11e4-aace-600308960668",
+        price: "456.7",
+        effective_from: ~U[2026-05-11 11:19:00Z]
+      }
+
+      assert {:ok, %ProductPrice{} = product_price} =
+               Pricing.update_product_price(product_price, update_attrs)
+
       assert product_price.currency == "some updated currency"
       assert product_price.product_id == "7488a646-e31f-11e4-aace-600308960668"
       assert product_price.price == Decimal.new("456.7")
@@ -47,7 +60,10 @@ defmodule AluminiumShop.PricingTest do
 
     test "update_product_price/2 with invalid data returns error changeset" do
       product_price = product_price_fixture()
-      assert {:error, %Ecto.Changeset{}} = Pricing.update_product_price(product_price, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Pricing.update_product_price(product_price, @invalid_attrs)
+
       assert product_price == Pricing.get_product_price!(product_price.id)
     end
 

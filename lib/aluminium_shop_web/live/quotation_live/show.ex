@@ -70,7 +70,9 @@ defmodule AluminiumShopWeb.QuotationShowLive do
             readonly
             class="border p-2 w-full mb-2"
           />
-
+          <p class="text-sm text-gray-600 mb-2">
+            Unit Price: {@unit_price} KES
+          </p>
           <button class="bg-blue-600 text-white px-4 py-2 rounded">
             Add Item
           </button>
@@ -137,25 +139,21 @@ defmodule AluminiumShopWeb.QuotationShowLive do
   end
 
   def handle_event("select_product", %{"product_id" => id}, socket) do
-    product = Enum.find(socket.assigns.products, &(&1.id == id))
-
-    # You can later fetch real price from product_prices table
-    # temporary fallback
-    unit_price = "100"
+    price = AluminiumShop.Catalog.get_latest_price(id)
 
     {:noreply,
      assign(socket,
        selected_product_id: id,
-       unit_price: unit_price
+       unit_price: (price && price.price) || "0"
      )}
   end
+
   def handle_event("remove_item", %{"id" => id}, socket) do
-  Sales.delete_item(id)
+    Sales.delete_item(id)
 
-  updated =
-    Sales.get_quotation!(socket.assigns.quotation.id)
+    updated =
+      Sales.get_quotation!(socket.assigns.quotation.id)
 
-  {:noreply,
-   assign(socket, quotation: updated)}
-end
+    {:noreply, assign(socket, quotation: updated)}
+  end
 end

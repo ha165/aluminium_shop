@@ -237,4 +237,57 @@ defmodule AluminiumShop.Inventory do
       |> Repo.insert!()
     end)
   end
+  @doc """
+  Removes stock from inventory for a product.
+
+  Returns:
+  - `{:ok, updated_inventory}` on success
+  - `{:error, changeset}` if insufficient stock or other error
+
+  ## Examples
+
+      iex> remove_stock(product_id, 5, user_id)
+      {:ok, %Inventory{}}
+  """
+  def remove_stock(product_id, quantity, user_id) when quantity > 0 do
+    Repo.transaction(fn ->
+      # Get inventory record
+      inventory = Repo.get_by(Inventory, product_id: product_id)
+      
+      if !inventory do
+        Repo.rollback("Product not found in inventory")
+      end
+      
+      # Check if enough stock
+      if inventory.quantity < quantity do
+        Repo.rollback("Insufficient stock. Available: #{inventory.quantity}, Requested: #{quantity}")
+      end
+      
+      # Update inventory
+      new_quantity = inventory.quantity - quantity
+      
+      inventory
+      |> Inventory.changeset(%{quantity: new_quantity})
+      |> Repo.update!()
+      
+      # Log the stock movement
+      %StockMovement{}
+      |> StockMovement.changeset(%{
+        product_id: product_id,
+        quantity: -quantity,  # Negative for removal
+        type: "OUT",
+        reason: "Quotation approved",
+        created_by: user_id
+      })
+      |> Repo.insert!()
+      
+      {:ok, inventory}
+    end)
+  end
+  
+  # Handle zero or negative quantity
+  def remove_stock(_product_id, quantity, _user_id) when quantity <= 0 do
+    {:error, "Quantity must be positive"}
+  end
+end
 end

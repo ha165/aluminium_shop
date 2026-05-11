@@ -1,8 +1,6 @@
 defmodule AluminiumShopWeb.InventoryLive do
   use AluminiumShopWeb, :live_view
 
-  alias AluminiumShop.Inventory.Stock
-  alias AluminiumShop.Repo
   alias AluminiumShop.Inventory
 
   def mount(_, _, socket) do

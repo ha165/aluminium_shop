@@ -7,7 +7,7 @@ defmodule AluminiumShop.Repo.Migrations.CreateProductPrices do
       add :price, :decimal
       add :currency, :string
       add :effective_from, :utc_datetime
-      
+
       timestamps(type: :utc_datetime)
     end
 
