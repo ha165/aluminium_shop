@@ -202,23 +202,22 @@ defmodule AluminiumShop.Catalog do
   end
 
   def get_latest_price(product_id) do
-  Repo.one(
-    from p in ProductPrice,
-    where: p.product_id == ^product_id,
-    order_by: [desc: p.effective_from],
-    limit: 1
-  )
-end
+    Repo.one(
+      from p in ProductPrice,
+        where: p.product_id == ^product_id,
+        order_by: [desc: p.effective_from],
+        limit: 1
+    )
+  end
 
-def set_product_price(product_id, price, currency \\ "KES") do
-  %ProductPrice{}
-  |> ProductPrice.changeset(%{
-    product_id: product_id,
-    price: price,
-    currency: currency,
-    effective_from: DateTime.utc_now()
-  })
-  |> Repo.insert()
-end
-
+  def set_product_price(product_id, price, currency \\ "KES") do
+    %ProductPrice{}
+    |> ProductPrice.changeset(%{
+      product_id: product_id,
+      price: price,
+      currency: currency,
+      effective_from: DateTime.utc_now()
+    })
+    |> Repo.insert()
+  end
 end
