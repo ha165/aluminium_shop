@@ -197,4 +197,36 @@ defmodule AluminiumShop.Inventory do
   def change_stock_movement(%StockMovement{} = stock_movement, attrs \\ %{}) do
     StockMovement.changeset(stock_movement, attrs)
   end
+
+  def restock_product(product_id, quantity, user_id) do
+    Repo.transaction(fn ->
+      inventory =
+        Repo.get_by(Stock, product_id: product_id)
+      
+      inventory = 
+        if inventory do
+          inventory
+        else
+           %Stock{
+            product_id: product_id,
+            quantity: 0,
+            location: "Default Location"
+          }
+          |> Repo.insert!()
+        end
+
+      Inventory
+       |>Stock.changeset(%{quantity: inventory.quantity + quantity})
+        |> Repo.update!()
+
+      %StockMovement{}
+      |> StockMovement.changeset(%{
+        product_id: product_id,
+        quantity: quantity,
+        type: "Restock",
+        created_by: user_id
+      })
+      |> Repo.insert!()
+    end)
+  end
 end
