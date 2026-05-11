@@ -79,7 +79,9 @@ defmodule AluminiumShop.InventoryTest do
     test "create_stock_movement/1 with valid data creates a stock_movement" do
       valid_attrs = %{reason: "some reason", type: "some type", quantity: 42}
 
-      assert {:ok, %StockMovement{} = stock_movement} = Inventory.create_stock_movement(valid_attrs)
+      assert {:ok, %StockMovement{} = stock_movement} =
+               Inventory.create_stock_movement(valid_attrs)
+
       assert stock_movement.reason == "some reason"
       assert stock_movement.type == "some type"
       assert stock_movement.quantity == 42
@@ -93,7 +95,9 @@ defmodule AluminiumShop.InventoryTest do
       stock_movement = stock_movement_fixture()
       update_attrs = %{reason: "some updated reason", type: "some updated type", quantity: 43}
 
-      assert {:ok, %StockMovement{} = stock_movement} = Inventory.update_stock_movement(stock_movement, update_attrs)
+      assert {:ok, %StockMovement{} = stock_movement} =
+               Inventory.update_stock_movement(stock_movement, update_attrs)
+
       assert stock_movement.reason == "some updated reason"
       assert stock_movement.type == "some updated type"
       assert stock_movement.quantity == 43
@@ -101,7 +105,10 @@ defmodule AluminiumShop.InventoryTest do
 
     test "update_stock_movement/2 with invalid data returns error changeset" do
       stock_movement = stock_movement_fixture()
-      assert {:error, %Ecto.Changeset{}} = Inventory.update_stock_movement(stock_movement, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Inventory.update_stock_movement(stock_movement, @invalid_attrs)
+
       assert stock_movement == Inventory.get_stock_movement!(stock_movement.id)
     end
 

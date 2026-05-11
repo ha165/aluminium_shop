@@ -202,12 +202,12 @@ defmodule AluminiumShop.Inventory do
     Repo.transaction(fn ->
       inventory =
         Repo.get_by(Stock, product_id: product_id)
-      
-      inventory = 
+
+      inventory =
         if inventory do
           inventory
         else
-           %Stock{
+          %Stock{
             product_id: product_id,
             quantity: 0,
             location: "Default Location"
@@ -215,15 +215,18 @@ defmodule AluminiumShop.Inventory do
           |> Repo.insert!()
         end
 
-      Inventory
-       |>Stock.changeset(%{quantity: inventory.quantity + quantity})
-        |> Repo.update!()
+      inventory
+      |> Stock.changeset(%{
+        quantity: inventory.quantity + quantity
+      })
+      |> Repo.update!()
 
       %StockMovement{}
       |> StockMovement.changeset(%{
         product_id: product_id,
         quantity: quantity,
-        type: "Restock",
+        type: "IN",
+        reason: "Restock",
         created_by: user_id
       })
       |> Repo.insert!()
