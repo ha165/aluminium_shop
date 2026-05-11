@@ -29,7 +29,7 @@ defmodule AluminiumShop.Sales do
   """
   def list_quotations do
     Repo.all(Quotation)
-    |> Repo.preload(:customer, :items)
+    |> Repo.preload([:customer, :items])
   end
 
   @doc """
