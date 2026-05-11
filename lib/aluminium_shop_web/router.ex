@@ -43,8 +43,8 @@ defmodule AluminiumShopWeb.Router do
       live "/products/index", ProductIndexLive, :index
       live "/inventory", InventoryLive, :index
       live "/quotations", QuotationIndexLive, :index
-live "/quotations/new", QuotationFormLive, :new
-live "/quotations/:id", QuotationShowLive, :show
+      live "/quotations/new", QuotationFormLive, :new
+      live "/quotations/:id", QuotationShowLive, :show
     end
   end
 

@@ -31,15 +31,14 @@ defmodule AluminiumShopWeb.QuotationIndexLive do
       <div class="space-y-4">
         <%= for quotation <- @quotations do %>
           <div class="border rounded p-4">
-
             <p>
               <strong>Status:</strong>
-              <%= quotation.status %>
+              {quotation.status}
             </p>
 
             <p>
               <strong>Total:</strong>
-              <%= quotation.total_amount %>
+              {quotation.total_amount}
             </p>
 
             <a

@@ -145,16 +145,16 @@ defmodule AluminiumShop.Sales do
       {:error, %Ecto.Changeset{}}
 
   """
-def create_quotation(attrs, user_id) do
-  attrs =
-    Map.put(attrs, "created_by", user_id)
-    |> Map.put("status", "draft")
-    |> Map.put("total_amount", Decimal.new("0.00"))
+  def create_quotation(attrs, user_id) do
+    attrs =
+      Map.put(attrs, "created_by", user_id)
+      |> Map.put("status", "draft")
+      |> Map.put("total_amount", Decimal.new("0.00"))
 
-  %Quotation{}
-  |> Quotation.changeset(attrs)
-  |> Repo.insert()
-end
+    %Quotation{}
+    |> Quotation.changeset(attrs)
+    |> Repo.insert()
+  end
 
   @doc """
   Updates a quotation_item.
@@ -203,71 +203,67 @@ end
     QuotationItem.changeset(quotation_item, attrs)
   end
 
-
   def add_item_to_quotation(quotation_id, attrs) do
-  Repo.transaction(fn ->
+    Repo.transaction(fn ->
+      subtotal =
+        Decimal.mult(
+          Decimal.new(attrs["unit_price"]),
+          Decimal.new(attrs["quantity"])
+        )
 
-    subtotal =
-      Decimal.mult(
-        Decimal.new(attrs["unit_price"]),
-        Decimal.new(attrs["quantity"])
-      )
+      item_attrs =
+        attrs
+        |> Map.put("quotation_id", quotation_id)
+        |> Map.put("subtotal", subtotal)
 
-    item_attrs =
-      attrs
-      |> Map.put("quotation_id", quotation_id)
-      |> Map.put("subtotal", subtotal)
+      item =
+        %QuotationItem{}
+        |> QuotationItem.changeset(item_attrs)
+        |> Repo.insert!()
 
-    item =
-      %QuotationItem{}
-      |> QuotationItem.changeset(item_attrs)
-      |> Repo.insert!()
+      recalculate_quotation_total(quotation_id)
 
-    recalculate_quotation_total(quotation_id)
-
-    item
-  end)
-end
-
-def recalculate_quotation_total(quotation_id) do
-  quotation =
-    Repo.get!(Quotation, quotation_id)
-    |> Repo.preload(:items)
-
-  total =
-    quotation.items
-    |> Enum.reduce(Decimal.new("0.00"), fn item, acc ->
-      Decimal.add(acc, item.subtotal)
+      item
     end)
+  end
 
-  quotation
-  |> Quotation.changeset(%{
-    total_amount: total
-  })
-  |> Repo.update!()
-end
-
-def approve_quotation(quotation_id) do
-  Repo.transaction(fn ->
-
+  def recalculate_quotation_total(quotation_id) do
     quotation =
       Repo.get!(Quotation, quotation_id)
       |> Repo.preload(:items)
 
-    Enum.each(quotation.items, fn item ->
-      AluminiumShop.Inventory.remove_stock(
-        item.product_id,
-        item.quantity,
-        quotation.created_by
-      )
-    end)
+    total =
+      quotation.items
+      |> Enum.reduce(Decimal.new("0.00"), fn item, acc ->
+        Decimal.add(acc, item.subtotal)
+      end)
 
     quotation
     |> Quotation.changeset(%{
-      status: "approved"
+      total_amount: total
     })
     |> Repo.update!()
-  end)
-end
+  end
 
+  def approve_quotation(quotation_id) do
+    Repo.transaction(fn ->
+      quotation =
+        Repo.get!(Quotation, quotation_id)
+        |> Repo.preload(:items)
+
+      Enum.each(quotation.items, fn item ->
+        AluminiumShop.Inventory.remove_stock(
+          item.product_id,
+          item.quantity,
+          quotation.created_by
+        )
+      end)
+
+      quotation
+      |> Quotation.changeset(%{
+        status: "approved"
+      })
+      |> Repo.update!()
+    end)
+  end
 end
