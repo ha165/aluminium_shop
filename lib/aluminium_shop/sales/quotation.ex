@@ -7,7 +7,9 @@ defmodule AluminiumShop.Sales.Quotation do
     field :total_amount, :decimal
     field :customer_id, :id
     field :created_by, :id
-
+    
+    belongs_to :customer, AluminiumShop.Customers.Customer
+    belongs_to :creator, AluminiumShop.Accounts.User, foreign_key: :created_by
     timestamps(type: :utc_datetime)
   end
 
