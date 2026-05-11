@@ -117,6 +117,11 @@ defmodule AluminiumShop.Sales do
     Repo.all(QuotationItem)
   end
 
+  def list_quotations do
+   Repo.all(Quotation)
+  |> Repo.preload(:customer, :items)
+  end
+
   @doc """
   Gets a single quotation_item.
 
