@@ -6,8 +6,9 @@ defmodule AluminiumShop.Inventory.StockMovement do
     field :quantity, :integer
     field :type, :string
     field :reason, :string
-    field :product_id, :id
-    field :created_by, :id
+
+    belongs_to :product, AluminiumShop.Catalog.Product.
+    belongs_to :created_by, AluminiumShop.Accounts.User
 
     timestamps(type: :utc_datetime)
   end
