@@ -22,9 +22,7 @@ defmodule AluminiumShopWeb.QuotationFormLive do
         {:noreply,
          socket
          |> put_flash(:info, "Quotation created")
-         |> push_navigate(
-           to: "/quotations/#{quotation.id}"
-         )}
+         |> push_navigate(to: "/quotations/#{quotation.id}")}
 
       {:error, changeset} ->
         {:noreply,
@@ -37,7 +35,6 @@ defmodule AluminiumShopWeb.QuotationFormLive do
   def render(assigns) do
     ~H"""
     <div class="max-w-xl mx-auto p-6">
-
       <h1 class="text-2xl font-bold mb-6">
         New Quotation
       </h1>
@@ -46,7 +43,6 @@ defmodule AluminiumShopWeb.QuotationFormLive do
         for={@form}
         phx-submit="save"
       >
-
         <div class="mb-4">
           <label>
             Customer ID
@@ -65,7 +61,6 @@ defmodule AluminiumShopWeb.QuotationFormLive do
         >
           Create
         </button>
-
       </.form>
     </div>
     """

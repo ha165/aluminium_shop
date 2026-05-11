@@ -118,14 +118,15 @@ defmodule AluminiumShop.Sales do
   end
 
   def list_quotations do
-   Repo.all(Quotation)
-  |> Repo.preload(:customer, :items)
+    Repo.all(Quotation)
+    |> Repo.preload(:customer, :items)
   end
- 
+
   def get_quotation!(id) do
-  Repo.get!(Quotation, id)
-  |> Repo.preload(items: [:product])
-end
+    Repo.get!(Quotation, id)
+    |> Repo.preload(items: [:product])
+  end
+
   @doc """
   Gets a single quotation_item.
 
@@ -243,7 +244,7 @@ end
 
     total =
       quotation.items
-      |> Enum.reduce(Decimal.new("0.00"), fn item, acc ->
+      |> Enum.reduce(quotation.items, Decimal.new("0.00"), fn item, acc ->
         Decimal.add(acc, item.subtotal)
       end)
 
@@ -275,4 +276,33 @@ end
       |> Repo.update!()
     end)
   end
+
+  def add_item(quotation_id, product_id, quantity, unit_price) do
+    Repo.transaction(fn ->
+      subtotal =
+        Decimal.mult(
+          Decimal.new(quantity),
+          Decimal.new(unit_price)
+        )
+
+      %QuotationItem{}
+      |> QuotationItem.changeset(%{
+        quotation_id: quotation_id,
+        product_id: product_id,
+        quantity: quantity,
+        unit_price: unit_price,
+        subtotal: subtotal
+      })
+      |> Repo.insert!()
+
+      recalculate_quotation_total(quotation_id)
+    end)
+  end
+  def delete_item(id) do
+  item = Repo.get!(QuotationItem, id)
+
+  Repo.delete!(item)
+
+  recalculate_total(item.quotation_id)
+end
 end
