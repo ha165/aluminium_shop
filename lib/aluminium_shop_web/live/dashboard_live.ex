@@ -16,9 +16,9 @@ defmodule AluminiumShopWeb.DashboardLive do
       <% end %>
     </div>
 
-    <.form for={:logout} method="delete" action={~p"/logout"}>
-      <button type="submit">Log out</button>
-    </.form>
+    <.link method="delete" href={~p"/logout"}>
+      Log out
+    </.link>
     """
   end
 end

@@ -26,7 +26,7 @@ defmodule AluminiumShopWeb.ProductFormLive do
     ~H"""
     <div class="container mx-auto p-4">
       <h1 class="text-2xl font-bold mb-4">Create New Product</h1>
-      
+
       <.form
         for={@changeset}
         id="product-form"
@@ -41,7 +41,7 @@ defmodule AluminiumShopWeb.ProductFormLive do
             class="w-full p-2 border rounded"
           />
           <%= if error = get_error(@changeset, :name) do %>
-            <span class="text-red-500 text-sm"><%= error %></span>
+            <span class="text-red-500 text-sm">{error}</span>
           <% end %>
         </div>
 
@@ -54,7 +54,7 @@ defmodule AluminiumShopWeb.ProductFormLive do
             class="w-full p-2 border rounded"
           />
           <%= if error = get_error(@changeset, :sku) do %>
-            <span class="text-red-500 text-sm"><%= error %></span>
+            <span class="text-red-500 text-sm">{error}</span>
           <% end %>
         </div>
 
@@ -65,7 +65,7 @@ defmodule AluminiumShopWeb.ProductFormLive do
             class="w-full p-2 border rounded"
           ><%= get_field(@changeset, :description) %></textarea>
           <%= if error = get_error(@changeset, :description) do %>
-            <span class="text-red-500 text-sm"><%= error %></span>
+            <span class="text-red-500 text-sm">{error}</span>
           <% end %>
         </div>
 
@@ -74,13 +74,16 @@ defmodule AluminiumShopWeb.ProductFormLive do
           <select name="product[category_id]" class="w-full p-2 border rounded">
             <option value="">Select a category</option>
             <%= for category <- Catalog.list_categories() do %>
-              <option value={category.id} selected={get_field(@changeset, :category_id) == category.id}>
-                <%= category.name %>
+              <option
+                value={category.id}
+                selected={get_field(@changeset, :category_id) == category.id}
+              >
+                {category.name}
               </option>
             <% end %>
           </select>
           <%= if error = get_error(@changeset, :category_id) do %>
-            <span class="text-red-500 text-sm"><%= error %></span>
+            <span class="text-red-500 text-sm">{error}</span>
           <% end %>
         </div>
 
@@ -88,7 +91,10 @@ defmodule AluminiumShopWeb.ProductFormLive do
           <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Save Product
           </button>
-          <.link navigate={~p"/products/new"} class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+          <.link
+            navigate={~p"/products/new"}
+            class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          >
             Cancel
           </.link>
         </div>

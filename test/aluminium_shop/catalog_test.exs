@@ -1,6 +1,6 @@
 defmodule AluminiumShop.CatalogTest do
   use AluminiumShop.DataCase
-  
+
   alias AluminiumShop.Catalog
   alias AluminiumShop.Repo
   alias AluminiumShop.Catalog.Category
@@ -8,11 +8,11 @@ defmodule AluminiumShop.CatalogTest do
   describe "categories with parent" do
     setup do
       # Create parent category
-      parent = 
+      parent =
         %Category{}
         |> Category.changeset(%{name: "Building Materials"})
         |> AluminiumShop.Repo.insert!()
-      
+
       %{parent: parent}
     end
 
@@ -21,13 +21,13 @@ defmodule AluminiumShop.CatalogTest do
         name: "Windows",
         parent_id: parent.id
       }
-      
+
       # Create the child category
-      child = 
+      child =
         %Category{}
         |> Category.changeset(attrs)
         |> Repo.insert!()
-      
+
       assert child.parent_id == parent.id
       assert child.name == "Windows"
     end
@@ -39,12 +39,10 @@ defmodule AluminiumShop.CatalogTest do
         sku: "ALWIN",
         category_id: parent.id
       }
-      
+
       assert {:ok, product} = Catalog.create_product(attrs)
       assert product.name == "Aluminium window"
       assert product.sku == "ALWIN"
     end
   end
-
-  
 end

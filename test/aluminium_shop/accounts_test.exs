@@ -95,28 +95,30 @@ defmodule AluminiumShop.AccountsTest do
     setup do
       admin_role = %Role{name: "admin"}
       {:ok, admin_role} = Repo.insert(admin_role)
-      
+
       employee_role = %Role{name: "employee"}
       {:ok, employee_role} = Repo.insert(employee_role)
-      
-      {:ok, admin_user} = Accounts.create_user(%{
-        first_name: "Admin",
-        last_name: "User",
-        email: "admin@test.com",
-        phone: "1234567890",
-        password: "password123",
-        role_id: admin_role.id
-      })
-      
-      {:ok, employee_user} = Accounts.create_user(%{
-        first_name: "Employee",
-        last_name: "User",
-        email: "employee@test.com",
-        phone: "0987654321",
-        password: "password123",
-        role_id: employee_role.id
-      })
-      
+
+      {:ok, admin_user} =
+        Accounts.create_user(%{
+          first_name: "Admin",
+          last_name: "User",
+          email: "admin@test.com",
+          phone: "1234567890",
+          password: "password123",
+          role_id: admin_role.id
+        })
+
+      {:ok, employee_user} =
+        Accounts.create_user(%{
+          first_name: "Employee",
+          last_name: "User",
+          email: "employee@test.com",
+          phone: "0987654321",
+          password: "password123",
+          role_id: employee_role.id
+        })
+
       %{admin_user: admin_user, employee_user: employee_user}
     end
 
@@ -125,12 +127,12 @@ defmodule AluminiumShop.AccountsTest do
       admin_user = Repo.preload(admin_user, :role)
       assert Accounts.is_admin?(admin_user) == true
     end
-    
+
     test "returns false for employee user", %{employee_user: employee_user} do
       employee_user = Repo.preload(employee_user, :role)
       assert Accounts.is_admin?(employee_user) == false
     end
-    
+
     test "returns false for nil user" do
       assert Accounts.is_admin?(nil) == false
     end

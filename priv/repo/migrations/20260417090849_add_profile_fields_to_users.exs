@@ -7,6 +7,7 @@ defmodule AluminiumShop.Repo.Migrations.AddProfileFieldsToUsers do
       add :last_name, :string
       add :phone, :string
     end
+
     create unique_index(:users, [:phone])
   end
 end

@@ -54,8 +54,8 @@ defmodule AluminiumShopWeb.Router do
         {AluminiumShopWeb.UserAuth, :require_authenticated_user},
         {AluminiumShopWeb.UserAuth, :require_admin}
       ] do
-      #live "/admin", AdminDashboardLive, :index
-      #live "/users", UserManagementLive, :index
+      # live "/admin", AdminDashboardLive, :index
+      # live "/users", UserManagementLive, :index
       live "/products/new", ProductFormLive, :new
     end
   end

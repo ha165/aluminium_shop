@@ -13,8 +13,7 @@ defmodule AluminiumShopWeb.ProductIndexLive do
     <div class="products-container">
       <%= for product <- @products do %>
         <div>
-          <strong><%= product.name %></strong>
-          (<%= product.category.name %>)
+          <strong>{product.name}</strong> ({product.category.name})
         </div>
       <% end %>
 

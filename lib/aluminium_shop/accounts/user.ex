@@ -23,6 +23,6 @@ defmodule AluminiumShop.Accounts.User do
     |> validate_format(:email, ~r/@/)
     |> validate_required([:first_name, :last_name, :phone, :email, :role_id])
     |> unique_constraint(:email)
-    |>unique_constraint(:phone)
+    |> unique_constraint(:phone)
   end
 end
