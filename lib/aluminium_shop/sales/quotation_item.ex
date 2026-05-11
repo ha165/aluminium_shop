@@ -6,8 +6,9 @@ defmodule AluminiumShop.Sales.QuotationItem do
     field :quantity, :integer
     field :unit_price, :decimal
     field :subtotal, :decimal
-    field :quotation_id, :id
-    field :product_id, :id
+
+    belongs_to :quotation, AluminiumShop.Sales.Quotation
+    belongs_to :product, AluminiumShop.Products.Product
 
     timestamps(type: :utc_datetime)
   end

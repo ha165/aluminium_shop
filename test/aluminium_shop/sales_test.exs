@@ -93,7 +93,9 @@ defmodule AluminiumShop.SalesTest do
       quotation_item = quotation_item_fixture()
       update_attrs = %{quantity: 43, unit_price: "456.7", subtotal: "456.7"}
 
-      assert {:ok, %QuotationItem{} = quotation_item} = Sales.update_quotation_item(quotation_item, update_attrs)
+      assert {:ok, %QuotationItem{} = quotation_item} =
+               Sales.update_quotation_item(quotation_item, update_attrs)
+
       assert quotation_item.quantity == 43
       assert quotation_item.unit_price == Decimal.new("456.7")
       assert quotation_item.subtotal == Decimal.new("456.7")
@@ -101,7 +103,10 @@ defmodule AluminiumShop.SalesTest do
 
     test "update_quotation_item/2 with invalid data returns error changeset" do
       quotation_item = quotation_item_fixture()
-      assert {:error, %Ecto.Changeset{}} = Sales.update_quotation_item(quotation_item, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Sales.update_quotation_item(quotation_item, @invalid_attrs)
+
       assert quotation_item == Sales.get_quotation_item!(quotation_item.id)
     end
 

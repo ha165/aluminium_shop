@@ -5,11 +5,12 @@ defmodule AluminiumShop.Sales.Quotation do
   schema "quotations" do
     field :status, :string
     field :total_amount, :decimal
-    field :customer_id, :id
-    field :created_by, :id
-    
+
     belongs_to :customer, AluminiumShop.Customers.Customer
     belongs_to :creator, AluminiumShop.Accounts.User, foreign_key: :created_by
+
+    has_many :items, AluminiumShop.Sales.QuotationItem
+
     timestamps(type: :utc_datetime)
   end
 
