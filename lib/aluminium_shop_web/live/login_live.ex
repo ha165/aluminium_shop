@@ -1,6 +1,10 @@
 defmodule AluminiumShopWeb.LoginLive do
   use AluminiumShopWeb, :live_view
 
+  def mount(_params, _session, socket) do
+    {:ok, socket}
+  end
+
   def render(assigns) do
     ~H"""
     <div class="max-w-md mx-auto mt-20">
