@@ -7,8 +7,8 @@ defmodule AluminiumShop.Repo.Migrations.CreateQuotationItems do
       add :quantity, :integer
       add :unit_price, :decimal
       add :subtotal, :decimal
-      add :quotation_id, references(:quotations, type: :binary_id, on_delete: :delete_all, null: false)
-      add :product_id, references(:products, type: :binary_id, on_delete: :nothing, null: false)
+      add :quotation_id, references(:quotations, type: :binary_id, on_delete: :delete_all), null: false
+      add :product_id, references(:products, type: :binary_id, on_delete: :nothing), null: false
 
       timestamps(type: :utc_datetime)
     end

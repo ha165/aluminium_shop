@@ -9,7 +9,7 @@ defmodule AluminiumShop.Repo.Migrations.CreateUsers do
       add :first_name, :string
       add :last_name, :string
       add :phone, :string
-      add :role_id, references(:roles, type: :binary_id, on_delete: :nothing)
+      add :role_id, references(:roles, type: :binary_id, on_delete: :nothing), null: false
 
       timestamps(type: :utc_datetime)
     end
