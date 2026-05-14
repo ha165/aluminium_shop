@@ -15,7 +15,7 @@ defmodule AluminiumShop.Repo.Migrations.CreateUsers do
     end
 
     create unique_index(:users, [:email])
-    create unique_index(:users, [:phone])  # You have this in your schema
+    create unique_index(:users, [:phone])
     create index(:users, [:role_id])
   end
 end
