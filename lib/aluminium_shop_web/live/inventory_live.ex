@@ -4,6 +4,15 @@ defmodule AluminiumShopWeb.InventoryLive do
   alias AluminiumShop.Inventory
 
   def mount(_, _, socket) do
+    inventories = Inventory.list_inventory()
+  
+  # Debug: Inspect the first inventory item
+  case Enum.at(inventories, 0) do
+    nil -> IO.puts("No inventory items found")
+    first -> 
+      IO.inspect(first, label: "First inventory item")
+      IO.inspect(first.product, label: "Product association")
+  end
     {:ok, assign(socket, inventories: Inventory.list_inventory())}
   end
 
