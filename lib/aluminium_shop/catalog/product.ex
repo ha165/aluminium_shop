@@ -18,8 +18,8 @@ defmodule AluminiumShop.Catalog.Product do
   @doc false
   def changeset(product, attrs) do
     product
-    |> cast(attrs, [:name, :sku, :description])
-    |> validate_required([:name, :sku, :description])
+    |> cast(attrs, [:name, :sku, :description, :category_id])
+    |> validate_required([:name, :sku, :description, :category_id])
     |> unique_constraint(:sku)
   end
 end

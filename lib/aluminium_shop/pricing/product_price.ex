@@ -17,8 +17,8 @@ defmodule AluminiumShop.Pricing.ProductPrice do
   @doc false
   def changeset(product_price, attrs) do
     product_price
-    |> cast(attrs, [:product_id, :price, :currency, :effective_from])
-    |> validate_required([:product_id, :price, :currency, :effective_from])
+    |> cast(attrs, [:product_id, :price, :currency, :effective_from, :product_id])
+    |> validate_required([:product_id, :price, :currency, :effective_from, :product_id])
     |> foreign_key_constraint(:product_id)
   end
 end

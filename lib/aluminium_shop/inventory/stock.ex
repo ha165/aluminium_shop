@@ -17,7 +17,7 @@ defmodule AluminiumShop.Inventory.Stock do
   @doc false
   def changeset(stock, attrs) do
     stock
-    |> cast(attrs, [:quantity, :location])
-    |> validate_required([:quantity, :location])
+    |> cast(attrs, [:quantity, :location, :product_id])
+    |> validate_required([:quantity, :location, :product_id])
   end
 end

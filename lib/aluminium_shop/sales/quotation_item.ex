@@ -20,7 +20,7 @@ defmodule AluminiumShop.Sales.QuotationItem do
   @doc false
   def changeset(quotation_item, attrs) do
     quotation_item
-    |> cast(attrs, [:quantity, :unit_price, :subtotal])
-    |> validate_required([:quantity, :unit_price, :subtotal])
+    |> cast(attrs, [:quantity, :unit_price, :subtotal, :quotation_id, :product_id])
+    |> validate_required([:quantity, :unit_price, :subtotal, :quotation_id, :product_id])
   end
 end
