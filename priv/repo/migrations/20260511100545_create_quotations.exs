@@ -6,8 +6,8 @@ defmodule AluminiumShop.Repo.Migrations.CreateQuotations do
       add :id, :binary_id, primary_key: true
       add :status, :string
       add :total_amount, :decimal
-      add :customer_id, references(:customers, on_delete: :nothing)
-      add :created_by, references(:users, on_delete: :nothing)
+      add :customer_id, references(:customers, type: :binary_id, on_delete: :nothing)
+      add :created_by, references(:users, type: :binary_id, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end

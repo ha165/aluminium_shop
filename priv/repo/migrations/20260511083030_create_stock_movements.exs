@@ -7,8 +7,8 @@ defmodule AluminiumShop.Repo.Migrations.CreateStockMovements do
       add :quantity, :integer
       add :type, :string
       add :reason, :string
-      add :product_id, references(:products, on_delete: :nothing)
-      add :created_by, references(:users, on_delete: :nothing)
+      add :product_id, references(:products, type: :binary_id, on_delete: :nothing)
+      add :created_by, references(:users, type: :binary_id, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end

@@ -6,7 +6,7 @@ defmodule AluminiumShop.Repo.Migrations.CreateInventories do
       add :id, :binary_id, primary_key: true
       add :quantity, :integer
       add :location, :string
-      add :product_id, references(:products, on_delete: :nothing)
+      add :product_id, references(:products, type: :binary_id, on_delete: :nothing)
 
       timestamps(type: :utc_datetime)
     end
